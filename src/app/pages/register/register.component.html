@@ -1,0 +1,70 @@
+<div class="register-container">
+  <mat-card class="register-card">
+    <mat-card-header>
+      <mat-card-title>
+        Crear Usuario
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre Completo</mat-label>
+          <input matInput formControlName="nombreCompleto">
+          @if (nombreCompleto.touched && nombreCompleto.invalid) {
+            <mat-error>
+              Nombre completo obligatorio
+            </mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="email" formControlName="correoElectronico">
+          @if (correoElectronico.touched && correoElectronico.invalid) {
+            <mat-error>
+              Correo electrónico inválido
+            </mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password">
+          @if (password.touched &&password.invalid) {
+            <mat-error>
+              Contraseña obligatoria
+            </mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Rol</mat-label>
+          <mat-select formControlName="rol">
+            <mat-option [value]="UserRole.Asesor">
+              Asesor
+            </mat-option>
+            <mat-option [value]="UserRole.Estudiante">
+              Estudiante
+            </mat-option>
+          </mat-select>
+          @if (rol.touched &&rol.invalid) {
+            <mat-error>
+              Debe seleccionar un rol
+            </mat-error>
+          }
+        </mat-form-field>
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading()">
+            @if (!loading()) {
+              Crear Usuario
+            }
+            @if (loading()) {
+              <mat-spinner diameter="20">
+              </mat-spinner>
+            }
+          </button>
+          <button mat-stroked-button type="button" (click)="cancel()" [disabled]="loading()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
