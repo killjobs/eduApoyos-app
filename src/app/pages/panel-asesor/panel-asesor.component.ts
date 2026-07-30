@@ -65,7 +65,6 @@ export class PanelAsesorComponent implements OnInit {
   loadSolicitudes(): void {
   this.solicitudService.getSolicitudes(this.pageNumber,this.pageSize,this.estadoSeleccionado).subscribe({
       next: response => {
-        console.log('Solicitudes cargadas:', response.data.items);
         this.dataSource.data = response.data.items;
         this.totalRecords = response.data.totalRecords;
       }
@@ -73,12 +72,15 @@ export class PanelAsesorComponent implements OnInit {
   }
 
   openCreateSolicitudModal(): void {
-    this.dialog.open(
-      CrearSolicitudModalComponent,
+    const dialogRef = this.dialog.open(CrearSolicitudModalComponent,
       {
         width: '700px'
       }
     );
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadSolicitudes();
+    });
   }
 
   openDetail(id: string): void {

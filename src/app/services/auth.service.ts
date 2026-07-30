@@ -41,8 +41,6 @@ export class AuthService {
   }
 
   register(request: Register): Observable<void>{
-    console.log('Register request:', request);
-    console.log('API URL:', `${this.PATH}/register`);
     return this.http.post<void>(`${this.PATH}/register`, request);
   }
 
