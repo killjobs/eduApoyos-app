@@ -8,6 +8,8 @@ import { SolicitudApoyo } from '../models/solicitud-apoyo.model';
 import { RespuestaPagina } from '../models/respuesta-pagina.model';
 import { ApiResponse } from '../models/api-response.model';
 import { EstadoSolicitud } from '../models/estado-solicitud.enum';
+import { SolicitudDetalle } from '../models/solicitud-detalle.model';
+import { CambiarEstadoSolicitud } from '../models/cambiar-estado-solicitud.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +23,23 @@ export class SolicitudService {
     let params = new HttpParams()
     .set('page', page)
     .set('pageSize', pageSize);
-    console.log('SolicitudService - getSolicitudes called with params:', { page, pageSize, estado });
     if (estado) {
       params = params.set('estado', estado);
     }
 
     return this.http.get<ApiResponse<RespuestaPagina<SolicitudApoyo>>>(`${this.PATH}`, { params });
+  }
+  
+  getSolicitudDetalle(solicitudId: string): Observable<ApiResponse<SolicitudDetalle>> {
+    return this.http.get<ApiResponse<SolicitudDetalle>>(
+      `${this.PATH}/${solicitudId}`
+    );
+  }
+
+  cambiarEstado(solicitudId: string,request: CambiarEstadoSolicitud): Observable<ApiResponse<string>> {
+    return this.http.patch<ApiResponse<string>>(
+      `${this.PATH}/${solicitudId}/estado`,
+      request
+    );
   }
 }

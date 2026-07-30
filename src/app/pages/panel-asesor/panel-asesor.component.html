@@ -51,7 +51,7 @@
         </ng-container>
         <ng-container matColumnDef="estado">
           <th mat-header-cell *matHeaderCellDef>Estado</th>
-          <td mat-cell *matCellDef="let item">{{ getEstado(item.estado) }}</td>
+          <td mat-cell *matCellDef="let item">{{ item.estado | estadoSolicitud }}</td>
         </ng-container>
         <ng-container matColumnDef="fechaSolicitud">
           <th mat-header-cell *matHeaderCellDef>Fecha Solicitud</th>
@@ -64,7 +64,7 @@
         <ng-container matColumnDef="acciones">
           <th mat-header-cell *matHeaderCellDef>Acciones</th>
           <td mat-cell *matCellDef="let item">
-            <button mat-button color="primary" (click)="goToDetail(item.id)">
+            <button mat-button color="primary" (click)="openDetail(item.id)">
               Ver detalle
             </button>
           </td>

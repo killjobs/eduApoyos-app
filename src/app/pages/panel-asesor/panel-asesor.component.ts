@@ -13,10 +13,12 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { SolicitudApoyo } from '../../models/solicitud-apoyo.model';
-import { CrearSolicitudModalComponent } from '../../components/crear-solicitud/crear-solicitud-modal.component';
+import { CrearSolicitudModalComponent } from '../../components/crear-solicitud-modal/crear-solicitud-modal.component';
 import { SolicitudService } from '../../services/solicitud.service';
 import { TipoApoyo } from '../../models/tipo-apoyo.enum';
 import { EstadoSolicitud } from '../../models/estado-solicitud.enum';
+import { SolicitudDetalleModalComponent } from '../../components/solicitud-detalle-modal/solicitud-detalle-modal.component';
+import { EstadoSolicitudPipe } from '../../pipes/estado-solicitud.pipe';
 
 @Component({
   selector: 'app-panel-asesor',
@@ -29,7 +31,8 @@ import { EstadoSolicitud } from '../../models/estado-solicitud.enum';
     MatButtonModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    EstadoSolicitudPipe
   ],
   templateUrl: './panel-asesor.component.html',
   styleUrl: './panel-asesor.component.scss'
@@ -78,8 +81,17 @@ export class PanelAsesorComponent implements OnInit {
     );
   }
 
-  goToDetail(id: string): void {
-    this.router.navigate(['/solicitudes', id]);
+  openDetail(id: string): void {
+     const dialogRef = this.dialog.open(SolicitudDetalleModalComponent,
+      {
+        width: '1000px',
+        data: id
+      }
+    );
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadSolicitudes();
+    });
   }
 
   onPageChange(event: PageEvent): void {
@@ -104,20 +116,5 @@ export class PanelAsesorComponent implements OnInit {
   onEstadoChange(): void {
     this.pageNumber = 1;
     this.loadSolicitudes();
-  }
-
-  getEstado(estado: EstadoSolicitud): string {
-    switch (estado) {
-      case EstadoSolicitud.Pendiente:
-        return 'Pendiente';
-      case EstadoSolicitud.EnRevision:
-        return 'En Revisión';
-      case EstadoSolicitud.Aprobada:
-        return 'Aprobada';
-      case EstadoSolicitud.Rechazada:
-        return 'Rechazada';
-      default:
-        return 'No definido';
-    }
   }
 }
