@@ -1,1 +1,85 @@
-<p>panel-asesor works!</p>
+<div class="panel-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Gestión de Solicitudes
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="toolbar">
+        <mat-form-field appearance="outline">
+          <mat-label>Estado</mat-label>
+          <mat-select
+            [(value)]="estadoSeleccionado"
+            (selectionChange)="onEstadoChange()">
+            <mat-option [value]="null">
+              Todos
+            </mat-option>
+            <mat-option [value]="EstadoSolicitud.Pendiente">
+              Pendiente
+            </mat-option>
+            <mat-option [value]="EstadoSolicitud.EnRevision">
+              En revisión
+            </mat-option>
+            <mat-option [value]="EstadoSolicitud.Aprobada">
+              Aprobada
+            </mat-option>
+            <mat-option [value]="EstadoSolicitud.Rechazada">
+              Rechazada
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="openCreateSolicitudModal()">
+          Nueva Solicitud
+        </button>
+      </div>
+      <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>Id</th>
+          <td mat-cell *matCellDef="let item">{{ item.id }}</td>
+        </ng-container>
+        <ng-container matColumnDef="estudiante">
+        <th mat-header-cell *matHeaderCellDef>Estudiante</th>
+        <td mat-cell *matCellDef="let item">
+          <div>Documento: {{ item.estudiante.numeroDocumento }}</div>
+          <small>Semestre: {{ item.estudiante.semestre }}</small>
+        </td>
+      </ng-container>
+        <ng-container matColumnDef="tipoApoyo">
+          <th mat-header-cell *matHeaderCellDef>Tipo Apoyo</th>
+          <td mat-cell *matCellDef="let item">{{ getTipoApoyo(item.tipoApoyo) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let item">{{ getEstado(item.estado) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fechaSolicitud">
+          <th mat-header-cell *matHeaderCellDef>Fecha Solicitud</th>
+          <td mat-cell *matCellDef="let item">{{ item.fechaSolicitud }}</td>
+        </ng-container>
+        <ng-container matColumnDef="montoSolicitado">
+          <th mat-header-cell *matHeaderCellDef>Monto Solicitado</th>
+          <td mat-cell *matCellDef="let item">{{ item.montoSolicitado }}</td>
+        </ng-container>
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let item">
+            <button mat-button color="primary" (click)="goToDetail(item.id)">
+              Ver detalle
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns">
+        </tr>
+      </table>
+      <mat-paginator
+        [length]="totalRecords"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5,10,20]"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>
